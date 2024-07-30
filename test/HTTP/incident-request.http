@@ -1,0 +1,7 @@
+### Send
+POST http://localhost:4004/odata/v4/catalog/Incident
+Content-Type: application/json
+
+{
+    "description": "ABAP"
+}

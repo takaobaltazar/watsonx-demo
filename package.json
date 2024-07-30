@@ -1,5 +1,5 @@
 {
-  "name": "watsonx-2",
+  "name": "watsonx-demo",
   "version": "1.0.0",
   "description": "A simple CAP project.",
   "repository": "<Add your repository here>",
@@ -7,8 +7,12 @@
   "private": true,
   "dependencies": {
     "@sap/cds": "^7",
+    "@sap/cds-odata-v2-adapter-proxy": "^1.9.21",
+    "@sap/xssec": "^3",
     "axios": "^1.7.2",
-    "express": "^4"
+    "cds-swagger-ui-express": "^0.9.0",
+    "express": "^4",
+    "@sap/cds-hana": "^2"
   },
   "devDependencies": {
     "@cap-js/sqlite": "^1",
@@ -18,5 +22,18 @@
   },
   "scripts": {
     "start": "cds-serve"
+  },
+  "cds": {
+    "requires": {
+      "auth": "mocked",
+      "users": {
+        "watsonxuser": {
+          "password": "watson123"
+        }
+      },
+      "[production]": {
+        "db": "hana"
+      }
+    }
   }
 }

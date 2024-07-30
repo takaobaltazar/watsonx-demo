@@ -1,6 +1,5 @@
----
 _schema-version: '3.1'
-ID: watsonx-2
+ID: watsonx-demo
 version: 1.0.0
 description: "A simple CAP project."
 parameters:
@@ -12,7 +11,7 @@ build-parameters:
         - npm ci
         - npx cds build --production
 modules:
-  - name: watsonx-2-srv
+  - name: watsonx-demo-srv
     type: nodejs
     path: gen/srv
     parameters:
@@ -25,4 +24,30 @@ modules:
       - name: srv-api # required by consumers of CAP services (e.g. approuter)
         properties:
           srv-url: ${default-url}
-    requires: []
+    requires:
+      - name: watsonx-demo-auth
+      - name: watsonx-demo-db
+
+  - name: watsonx-demo-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: watsonx-demo-db
+
+resources:
+  - name: watsonx-demo-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: watsonx-demo-${org}-${space}
+        tenant-mode: dedicated
+  - name: watsonx-demo-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
